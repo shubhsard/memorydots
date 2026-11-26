@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+
+# build output
+.next/
+dist/
+coverage/
+*.tsbuildinfo
+
+# environment files (keep examples)
+.env
+.env.*
+!.env.example
+
+# hosting and tooling
+.vercel/
+.DS_Store
+*.log
