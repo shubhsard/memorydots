@@ -25,6 +25,7 @@ export class LocalTransport implements GameTransport {
             state: createGame(config, firstPlayer),
             outcome: null,
             clock: this.startClock(),
+            lastTap: null,
             roundNumber: 1,
         };
     }
@@ -52,7 +53,8 @@ export class LocalTransport implements GameTransport {
             clock = this.startClock();
         }
 
-        this.publish({ ...this.snapshot, state, outcome, clock });
+        const lastTap = event.type === "tap" ? { player: event.player, dot: event.dot } : null;
+        this.publish({ ...this.snapshot, state, outcome, clock, lastTap });
     }
 
     rematch(): void {
@@ -67,6 +69,7 @@ export class LocalTransport implements GameTransport {
             state: createGame(this.config, starter),
             outcome: null,
             clock: this.startClock(),
+            lastTap: null,
             roundNumber,
         });
     }

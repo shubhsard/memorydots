@@ -21,6 +21,11 @@ export interface Snapshot {
     outcome: Outcome | null;
     /** null once the round has ended. */
     clock: Clock | null;
+    /**
+     * The tap that produced this snapshot (accepted or rejected); null for other events
+     * and for a fresh round. Lets every screen, including the waiting player's, show which dot was tapped.
+     */
+    lastTap: { player: number; dot: number } | null;
     /** 1 for the first round, +1 for every rematch. */
     roundNumber: number;
 }

@@ -61,6 +61,7 @@ describe("LocalTransport", () => {
         expect(state.sequence).toEqual([2]);
         expect(state.activePlayer).toBe(1);
         expect(state.phase).toBe("replay");
+        expect(t.getSnapshot().lastTap).toEqual({ player: 0, dot: 2 });
         t.close();
     });
 
@@ -70,6 +71,7 @@ describe("LocalTransport", () => {
         t.send(tap(1, 0));
         expect(t.getSnapshot().outcome).toEqual({ kind: "rejected", reason: "not_your_turn" });
         expect(t.getSnapshot().state).toBe(before);
+        expect(t.getSnapshot().lastTap).toEqual({ player: 1, dot: 0 }); // reported even though rejected
         t.close();
     });
 
@@ -162,6 +164,7 @@ describe("LocalTransport", () => {
         const snap = t.getSnapshot();
         expect(snap.state.result).toEqual({ kind: "loss", loser: 1, winner: 0, reason: "left" });
         expect(snap.clock).toBeNull();
+        expect(snap.lastTap).toBeNull(); // not a tap
         const count = seen.length;
         vi.advanceTimersByTime(60_000);
         expect(seen.length).toBe(count);
@@ -191,6 +194,7 @@ describe("LocalTransport", () => {
         expect(snap.state.sequence).toEqual([]);
         expect(snap.state.result).toBeNull();
         expect(snap.outcome).toBeNull();
+        expect(snap.lastTap).toBeNull();
         expect(snap.clock).toEqual({
             countdownStartsAt: START + 3_000 + 10_000,
             stallsOutAt: START + 3_000 + 20_000,
