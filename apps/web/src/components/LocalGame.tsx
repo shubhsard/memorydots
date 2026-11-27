@@ -6,6 +6,7 @@ import { LOCAL_CONFIG, LOCAL_PLAYERS } from "../game/config";
 import { guideMessage } from "../game/guide";
 import { LocalTransport } from "../game/localTransport";
 import type { GameTransport } from "../game/transport";
+import { useCountdown } from "../game/useCountdown";
 import { useGame } from "../game/useGame";
 import Avatar from "./Avatar";
 import Board from "./Board";
@@ -28,6 +29,7 @@ export default function LocalGame() {
 function GameView({ transport }: { transport: GameTransport }) {
     const { snapshot, flashDot, send, rematch } = useGame(transport);
     const { state } = snapshot;
+    const secondsLeft = useCountdown(snapshot.clock);
 
     const dots = getDotViews(snapshot, flashDot);
     const columns = getColumns(dots.length);
@@ -67,6 +69,7 @@ function GameView({ transport }: { transport: GameTransport }) {
                         logo={player.logo}
                         name={player.name}
                         active={!ended && state.activePlayer === index}
+                        countdown={!ended && state.activePlayer === index ? secondsLeft : null}
                     />
                 ))}
             </div>
