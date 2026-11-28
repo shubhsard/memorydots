@@ -32,7 +32,11 @@ describe("guideMessage", () => {
         expect(guide([tap(0, 3), tap(1, 3), tap(1, 7)])).toBe("Your turn: tap the dots in order");
     });
 
-    test("a finished round has its own message", () => {
-        expect(guide([tap(0, 3), tap(1, 9)])).toBe("Round over");
+    test("a wrong tap says so while the correct dot is revealed", () => {
+        expect(guide([tap(0, 3), tap(1, 9)])).toBe("Wrong tap");
+    });
+
+    test("other endings use a plain message until the result takes over", () => {
+        expect(guide([tap(0, 3), { type: "timeout", player: 1 }])).toBe("Round over");
     });
 });

@@ -4,6 +4,7 @@ export interface PlayerInfo {
   name: string;      // "You", "Local"
   logo: string;      // "Y", "L"
   turnLabel: string; // "Your turn", "Local's turn"
+  winLabel: string;  // "You win", "Local wins"
 }
 
 /**
@@ -12,7 +13,11 @@ export interface PlayerInfo {
  */
 export function guideMessage(snapshot: Snapshot, players: PlayerInfo[]): string {
   const { state } = snapshot;
-  if (state.phase === "ended") return "Round over"; // replaced by real result messages in step 3c
+  if (state.phase === "ended") {
+    // While the wrong dot is being revealed; the result message takes over afterwards.
+    const result = state.result;
+    return result?.kind === "loss" && result.reason === "wrong_tap" ? "Wrong tap" : "Round over";
+  }
   const who = players[state.activePlayer].turnLabel;
   const action = state.phase === "replay" ? "tap the dots in order" : "pick any dot";
   return `${who}: ${action}`;

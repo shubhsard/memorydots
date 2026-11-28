@@ -15,6 +15,6 @@ export const ADDED_FLASH_MS = 1_000;
 
 // Local mode: two people share one device. The creator ("You", Y) is on the left and goes first.
 export const LOCAL_PLAYERS: PlayerInfo[] = [
-  { name: "You", logo: "Y", turnLabel: "Your turn" },
-  { name: "Local", logo: "L", turnLabel: "Local's turn" },
+  { name: "You", logo: "Y", turnLabel: "Your turn", winLabel: "You win" },
+  { name: "Local", logo: "L", turnLabel: "Local's turn", winLabel: "Local wins" },
 ];

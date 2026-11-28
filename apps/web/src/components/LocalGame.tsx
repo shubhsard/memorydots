@@ -5,9 +5,11 @@ import { getColumns, getDotViews } from "../game/boardModel";
 import { LOCAL_CONFIG, LOCAL_PLAYERS } from "../game/config";
 import { guideMessage } from "../game/guide";
 import { LocalTransport } from "../game/localTransport";
+import { avatarOutcome, resultMessage } from "../game/result";
 import type { GameTransport } from "../game/transport";
 import { useCountdown } from "../game/useCountdown";
 import { useGame } from "../game/useGame";
+import { useResultStage } from "../game/useResultStage";
 import Avatar from "./Avatar";
 import Board from "./Board";
 
@@ -35,13 +37,14 @@ function GameView({ transport }: { transport: GameTransport }) {
     const columns = getColumns(dots.length);
     const ended = state.phase === "ended";
 
-    // Temporary result text and Rematch button: replaced by the result screen in step 3c.
-    const resultText =
-        state.result?.kind === "perfect_recall"
-            ? "Perfect Recall – both players win"
-            : state.result?.kind === "loss"
-                ? `Winner: ${LOCAL_PLAYERS[state.result.winner].name}`
-                : "";
+    // After a wrong tap the board first reveals the right dot; then the result is declared,
+    // and only after that can a rematch be requested.
+    const stage = useResultStage(snapshot);
+    const resultDeclared = stage === "result" || stage === "rematch";
+    const message =
+        resultDeclared && state.result !== null
+            ? resultMessage(state.result, LOCAL_PLAYERS)
+            : guideMessage(snapshot, LOCAL_PLAYERS);
 
     return (
         <div className="space-y-4">
@@ -58,7 +61,7 @@ function GameView({ transport }: { transport: GameTransport }) {
 
             {/* role="status" makes this a polite live region, so screen readers announce each change. */}
             <p role="status" className="text-center">
-                {guideMessage(snapshot, LOCAL_PLAYERS)}
+                {message}
             </p>
 
             {/* The creator is always on the left. */}
@@ -70,13 +73,13 @@ function GameView({ transport }: { transport: GameTransport }) {
                         name={player.name}
                         active={!ended && state.activePlayer === index}
                         countdown={!ended && state.activePlayer === index ? secondsLeft : null}
+                        outcome={resultDeclared ? avatarOutcome(state.result, index) : null}
                     />
                 ))}
             </div>
 
-            {ended && (
-                <div className="space-y-2 text-center">
-                    <p className="font-semibold">{resultText}</p>
+            {stage === "rematch" && (
+                <div className="text-center">
                     <button
                         type="button"
                         onClick={rematch}
