@@ -21,7 +21,7 @@ export default function EmptyBoard({ onChoose }: EmptyBoardProps) {
 
     return (
         <div className="space-y-4">
-            <div className="rounded-2xl border-2 border-transparent p-2">
+            <div className="rounded-2xl border-2 border-transparent p-1.5 sm:p-2">
                 <Board dots={dots} columns={getColumns(dots.length)} onTap={() => { }} />
             </div>
 

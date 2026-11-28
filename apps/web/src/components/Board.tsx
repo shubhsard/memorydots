@@ -22,7 +22,7 @@ export default function Board({ dots, columns, onTap }: BoardProps) {
         <div
             role="group"
             aria-label="Dot board"
-            className="mx-auto grid w-full max-w-[420px] gap-2"
+            className="mx-auto grid w-full max-w-[420px] select-none gap-2"
             style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
         >
             {dots.map((view) => (

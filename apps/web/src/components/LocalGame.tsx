@@ -52,7 +52,7 @@ function GameView({ transport, onLeave }: { transport: GameTransport; onLeave: (
         <div className="space-y-4">
             {/* The active player's playground has a blue border. Local mode has one shared playground. */}
             <div
-                className={`rounded-2xl border-2 p-2 ${ended ? "border-transparent" : "border-blue-500"}`}
+                className={`rounded-2xl border-2 p-1.5 sm:p-2 ${ended ? "border-transparent" : "border-blue-500"}`}
             >
                 <Board
                     dots={dots}
