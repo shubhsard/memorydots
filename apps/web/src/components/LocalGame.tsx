@@ -12,10 +12,11 @@ import { useGame } from "../game/useGame";
 import { useResultStage } from "../game/useResultStage";
 import Avatar from "./Avatar";
 import Board from "./Board";
+import LeaveDialog from "./LeaveDialog";
 
 // Creates the in-browser transport for Local mode and cleans it up on unmount.
 // (Created in an effect so React Strict Mode's mount/unmount/mount cycle gets a fresh transport.)
-export default function LocalGame() {
+export default function LocalGame({ onLeave }: { onLeave: () => void }) {
     const [transport, setTransport] = useState<GameTransport | null>(null);
 
     useEffect(() => {
@@ -24,14 +25,15 @@ export default function LocalGame() {
         return () => t.close();
     }, []);
 
-    return transport ? <GameView transport={transport} /> : null;
+    return transport ? <GameView transport={transport} onLeave={onLeave} /> : null;
 }
 
 // Works with any GameTransport: it never knows where the rules run.
-function GameView({ transport }: { transport: GameTransport }) {
+function GameView({ transport, onLeave }: { transport: GameTransport; onLeave: () => void }) {
     const { snapshot, flashDot, send, rematch } = useGame(transport);
     const { state } = snapshot;
     const secondsLeft = useCountdown(snapshot.clock);
+    const [confirmingLeave, setConfirmingLeave] = useState(false);
 
     const dots = getDotViews(snapshot, flashDot);
     const columns = getColumns(dots.length);
@@ -88,6 +90,17 @@ function GameView({ transport }: { transport: GameTransport }) {
                         Rematch
                     </button>
                 </div>
+            )}
+
+            {/* Leaving counts as a loss; in Local mode it returns to the landing screen. */}
+            <div className="text-center">
+                <button type="button" onClick={() => setConfirmingLeave(true)} className="text-blue-500">
+                    Leave
+                </button>
+            </div>
+
+            {confirmingLeave && (
+                <LeaveDialog onLeave={onLeave} onStay={() => setConfirmingLeave(false)} />
             )}
         </div>
     );
