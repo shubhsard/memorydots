@@ -16,8 +16,12 @@ export const BOARD_DOT_COUNT = LOCAL_CONFIG.levels[0].dotCount;
 // How long a newly added dot keeps its green flash (spec: about 3 seconds).
 export const ADDED_FLASH_MS = 1_000;
 
-// Local mode: two people share one device. The creator ("You", Y) is on the left and goes first.
+// One person looking at their own screen (the empty board now; Bot, Remote and Random later).
+export const YOU: PlayerInfo = { name: "You", logo: "Y", turnLabel: "Your turn", winLabel: "You win" };
+
+// Local mode: two people share one screen, so neither is "You". The creator is Player 1,
+// on the left, and goes first.
 export const LOCAL_PLAYERS: PlayerInfo[] = [
-  { name: "You", logo: "Y", turnLabel: "Your turn", winLabel: "You win" },
-  { name: "Local", logo: "L", turnLabel: "Local's turn", winLabel: "Local wins" },
+  { name: "Player 1", logo: "1", turnLabel: "Player 1's turn", winLabel: "Player 1 wins" },
+  { name: "Player 2", logo: "2", turnLabel: "Player 2's turn", winLabel: "Player 2 wins" },
 ];

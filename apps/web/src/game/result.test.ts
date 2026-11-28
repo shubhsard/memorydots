@@ -9,7 +9,7 @@ const left: Result = { kind: "loss", loser: 1, winner: 0, reason: "left" };
 const perfect: Result = { kind: "perfect_recall" };
 
 describe("resultSchedule", () => {
-    test("a wrong tap reveals for 1 s, declares the result for 1 s, then allows a rematch", () => {
+    test("a wrong tap reveals for 2 s, declares the result for 2 s, then allows a rematch", () => {
         expect(resultSchedule(true)).toEqual([
             { stage: "reveal", atMs: 0 },
             { stage: "result", atMs: 1_000 },
@@ -51,9 +51,9 @@ describe("avatarOutcome", () => {
 
 describe("resultMessage", () => {
     test("names the winner and says why", () => {
-        expect(resultMessage(wrongTap, LOCAL_PLAYERS)).toBe("You win: Local tapped the wrong dot");
-        expect(resultMessage(timeout, LOCAL_PLAYERS)).toBe("Local wins: You ran out of time");
-        expect(resultMessage(left, LOCAL_PLAYERS)).toBe("You win: Local left");
+        expect(resultMessage(wrongTap, LOCAL_PLAYERS)).toBe("Player 1 wins: Player 2 tapped the wrong dot");
+        expect(resultMessage(timeout, LOCAL_PLAYERS)).toBe("Player 2 wins: Player 1 ran out of time");
+        expect(resultMessage(left, LOCAL_PLAYERS)).toBe("Player 1 wins: Player 2 left");
     });
 
     test("the shared ending uses its spec name", () => {

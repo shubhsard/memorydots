@@ -1,10 +1,10 @@
 import type { Snapshot } from "./transport";
 
 export interface PlayerInfo {
-  name: string;      // "You", "Local"
+  name: string;      // "You", "Player 1"
   logo: string;      // "Y", "L"
-  turnLabel: string; // "Your turn", "Local's turn"
-  winLabel: string;  // "You win", "Local wins"
+  turnLabel: string; // "Your turn", "Player 1's turn"
+  winLabel: string;  // "You win", "Player 1 wins"
 }
 
 /**

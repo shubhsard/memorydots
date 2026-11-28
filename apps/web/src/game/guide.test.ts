@@ -9,27 +9,27 @@ const guide = (events: GameEvent[]) => guideMessage(snapshotAfter(LOCAL_CONFIG, 
 
 describe("guideMessage", () => {
     test("turn 1: the first player picks any dot", () => {
-        expect(guide([])).toBe("Your turn: pick any dot");
+        expect(guide([])).toBe("Player 1's turn: pick any dot");
     });
 
     test("the next player is told to replay in order", () => {
-        expect(guide([tap(0, 3)])).toBe("Local's turn: tap the dots in order");
+        expect(guide([tap(0, 3)])).toBe("Player 2's turn: tap the dots in order");
     });
 
     test("after a full replay the same player is told to pick any dot", () => {
-        expect(guide([tap(0, 3), tap(1, 3)])).toBe("Local's turn: pick any dot");
+        expect(guide([tap(0, 3), tap(1, 3)])).toBe("Player 2's turn: pick any dot");
     });
 
     test("it never reveals the sequence length while replaying", () => {
         const short = guide([tap(0, 3)]); // replaying 1 dot
         const long = guide([tap(0, 3), tap(1, 3), tap(1, 7), tap(0, 3), tap(0, 7), tap(0, 1)]); // replaying 3
-        expect(long).toBe("Local's turn: tap the dots in order");
-        expect(short.replace("Local's", "X")).toBe(long.replace("Local's", "X"));
-        expect(/\d/.test(short + long)).toBe(false);
+        // Same player replaying a sequence of a different length: the message must not change.
+        expect(short).toBe("Player 2's turn: tap the dots in order");
+        expect(long).toBe(short);
     });
 
     test("the message follows the active player", () => {
-        expect(guide([tap(0, 3), tap(1, 3), tap(1, 7)])).toBe("Your turn: tap the dots in order");
+        expect(guide([tap(0, 3), tap(1, 3), tap(1, 7)])).toBe("Player 1's turn: tap the dots in order");
     });
 
     test("a wrong tap says so while the correct dot is revealed", () => {

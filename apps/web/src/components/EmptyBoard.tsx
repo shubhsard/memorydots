@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { getColumns, getIdleDotViews } from "../game/boardModel";
-import { BOARD_DOT_COUNT, LOCAL_PLAYERS } from "../game/config";
+import { BOARD_DOT_COUNT, YOU } from "../game/config";
 import type { OpponentKind } from "../game/opponents";
 import Avatar from "./Avatar";
 import Board from "./Board";
@@ -18,7 +18,6 @@ interface EmptyBoardProps {
 export default function EmptyBoard({ onChoose }: EmptyBoardProps) {
     const [choosing, setChoosing] = useState(false);
     const dots = getIdleDotViews(BOARD_DOT_COUNT);
-    const you = LOCAL_PLAYERS[0];
 
     return (
         <div className="space-y-4">
@@ -31,7 +30,7 @@ export default function EmptyBoard({ onChoose }: EmptyBoardProps) {
             </p>
 
             <div className="flex justify-between">
-                <Avatar logo={you.logo} name={you.name} active={false} />
+                <Avatar logo={YOU.logo} name={YOU.name} active={false} />
                 <OpponentSlot onClick={() => setChoosing(true)} />
             </div>
 
