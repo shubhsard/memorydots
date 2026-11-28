@@ -10,6 +10,9 @@ export const LOCAL_CONFIG: EngineConfig = {
   countdownMs: 10_000,
 };
 
+// Number of dots on the board, also used for the empty board shown before an opponent is added.
+export const BOARD_DOT_COUNT = LOCAL_CONFIG.levels[0].dotCount;
+
 // How long a newly added dot keeps its green flash (spec: about 3 seconds).
 export const ADDED_FLASH_MS = 1_000;
 

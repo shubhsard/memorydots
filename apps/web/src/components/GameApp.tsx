@@ -1,16 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import Landing from "./Landing";
+import type { OpponentKind } from "../game/opponents";
+import EmptyBoard from "./EmptyBoard";
 import LocalGame from "./LocalGame";
 
-type Screen = "landing" | "local";
-
-// Single-page shell: switches between screens with no page loads.
-// Leaving a game unmounts it, which also closes its transport and stops its timers.
+// Single-page shell: no page loads. With no opponent it shows the empty board;
+// leaving a game goes back to it, and unmounting the game also closes its transport.
 export default function GameApp() {
-    const [screen, setScreen] = useState<Screen>("landing");
+    const [opponent, setOpponent] = useState<OpponentKind | null>(null);
 
-    if (screen === "local") return <LocalGame onLeave={() => setScreen("landing")} />;
-    return <Landing onPlayLocal={() => setScreen("local")} />;
+    if (opponent === "local") return <LocalGame onLeave={() => setOpponent(null)} />;
+    return <EmptyBoard onChoose={setOpponent} />;
 }

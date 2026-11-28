@@ -19,6 +19,16 @@ export function getColumns(dotCount: number): number {
     return Math.ceil(Math.sqrt(dotCount));
 }
 
+/** The board before an opponent is added: every dot dim and untappable. */
+export function getIdleDotViews(dotCount: number): DotView[] {
+    return Array.from({ length: dotCount }, (_, dot): DotView => ({
+        dot,
+        tone: "dim",
+        mark: "none",
+        tappable: false,
+    }));
+}
+
 /**
  * @param flashDot the dot that was just added, if its green flash is still showing
  */

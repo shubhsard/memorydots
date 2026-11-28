@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import type { EngineConfig, GameEvent } from "@memorydots/engine";
-import { dotLabel, getColumns, getDotViews } from "./boardModel";
+import { dotLabel, getColumns, getDotViews, getIdleDotViews } from "./boardModel";
 import type { DotView } from "./boardModel";
 import { LOCAL_CONFIG } from "./config";
 import { snapshotAfter as run } from "./testSupport";
@@ -15,6 +15,14 @@ describe("getColumns", () => {
         expect(getColumns(9)).toBe(3);
         expect(getColumns(4)).toBe(2);
         expect(getColumns(8)).toBe(3);
+    });
+});
+
+describe("getIdleDotViews", () => {
+    test("the empty board has every dot dim and untappable", () => {
+        const views = getIdleDotViews(25);
+        expect(views.length).toBe(25);
+        expect(views.every((v) => v.tone === "dim" && v.mark === "none" && !v.tappable)).toBe(true);
     });
 });
 
